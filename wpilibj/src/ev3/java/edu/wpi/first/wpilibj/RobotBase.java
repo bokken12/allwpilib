@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.jar.Manifest;
+
 import org.opencv.core.Core;
 
 import edu.wpi.first.wpilibj.hal.FRCNetComm.tInstances;
@@ -85,6 +86,17 @@ public abstract class RobotBase {
    */
   public static boolean isReal() {
     return true;
+  }
+  
+  public enum RobotPlatform {
+	  ROBORIO, GAZEBO, RASPI, EV3
+  }
+  
+  /**
+   * @return The platform that this robot is running on
+   */
+  public static RobotPlatform getPlatform(){
+	  return RobotPlatform.RASPI;
   }
 
   /**

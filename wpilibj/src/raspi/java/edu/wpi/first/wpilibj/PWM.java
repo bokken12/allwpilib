@@ -86,9 +86,9 @@ public class PWM extends SensorBase implements LiveWindowSendable {
 	 * Allocate a PWM given a channel.
 	 *
 	 * @param channel
-	 *            One integer containing two shorts for the GPIO pins used.
-	 *            Note PWM.PWM0 and PWM.PWM1 for more efficient pins that
-	 *            allow use of the hardware
+	 *            One integer containing two shorts for the GPIO pins used. Note
+	 *            PWM.PWM0 and PWM.PWM1 for more efficient pins that allow use
+	 *            of the hardware
 	 */
 	public PWM(final int channel) {
 		this.channel = channel;
@@ -276,7 +276,7 @@ public class PWM extends SensorBase implements LiveWindowSendable {
 	 * @pre SetMinNegativePwm() called.
 	 */
 	public double getSpeed() {
-		if(forward.getValue() != 0 && backward.getValue() != 0){
+		if(forward.getValue() != 0 && backward.getValue() != 0) {
 			return 0;
 		}
 		return forward.getValue() + backward.getValue();
@@ -411,19 +411,19 @@ public class PWM extends SensorBase implements LiveWindowSendable {
 		this.stoppingMode = stoppingMode;
 	}
 	
-	public int getChannel(){
+	public int getChannel() {
 		return channel;
 	}
 	
-	public static int packInt(int left, int right){
+	public static int packInt(int left, int right) {
 		return (left << 16) | (right & RIGHT);
 	}
 	
-	public static int leftShort(int source){
+	public static int leftShort(int source) {
 		return source >> 16;
 	}
 	
-	public static int rightShort(int source){
+	public static int rightShort(int source) {
 		return (short) (source & RIGHT);
 	}
 }

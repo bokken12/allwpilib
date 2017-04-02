@@ -77,6 +77,17 @@ public abstract class RobotBase {
   public static boolean isReal() {
     return false;
   }
+  
+  public enum RobotPlatform {
+	  ROBORIO, GAZEBO, RASPI, EV3
+  }
+  
+  /**
+   * @return The platform that this robot is running on
+   */
+  public static RobotPlatform getPlatform(){
+	  return RobotPlatform.RASPI;
+  }
 
   /**
    * Determine if the Robot is currently disabled.
