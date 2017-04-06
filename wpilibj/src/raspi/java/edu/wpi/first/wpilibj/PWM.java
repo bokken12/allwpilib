@@ -95,8 +95,7 @@ public class PWM extends SensorBase implements LiveWindowSendable {
 		int forw = leftShort(channel);
 		int back = rightShort(channel);
 		
-		checkPWMChannel(forw);
-		checkPWMChannel(back);
+		// TODO verify that channels are valid GPIO pins
 		
 		forward = new PwmOutputDevice(forw);
 		backward = new PwmOutputDevice(back);
@@ -127,15 +126,16 @@ public class PWM extends SensorBase implements LiveWindowSendable {
 	 * Optionally eliminate the deadband from a speed controller.
 	 *
 	 * @param eliminateDeadband
-	 *            If true, set the motor curve on the Jaguar to eliminate the
-	 *            deadband in the middle of the range. Otherwise, keep the full
-	 *            range without modifying any values.
+	 *            If true, remove the wait time at speed 0 to prevent short
+	 *            circuiting
 	 */
 	public void enableDeadbandElimination(boolean eliminateDeadband) {
 		deadband = eliminateDeadband ? 0 : DEFAULT_DEADBAND;
 	}
 	
 	/**
+	 * Throws an exception when called
+	 * 
 	 * Set the bounds on the PWM values. This sets the bounds on the PWM values
 	 * for a particular each type of controller. The values determine the upper
 	 * and lower speeds as well as the deadband bracket.
@@ -160,6 +160,8 @@ public class PWM extends SensorBase implements LiveWindowSendable {
 	}
 	
 	/**
+	 * Throws and exception when called
+	 * 
 	 * Set the bounds on the PWM pulse widths. This sets the bounds on the PWM
 	 * values for a particular type of controller. The values determine the
 	 * upper and lower speeds as well as the deadband bracket.
@@ -182,6 +184,8 @@ public class PWM extends SensorBase implements LiveWindowSendable {
 	}
 	
 	/**
+	 * Throws an exception when called
+	 * 
 	 * Gets the bounds on the PWM pulse widths. This Gets the bounds on the PWM
 	 * values for a particular type of controller. The values determine the
 	 * upper and lower speeds as well as the deadband bracket.
@@ -192,6 +196,8 @@ public class PWM extends SensorBase implements LiveWindowSendable {
 	}
 	
 	/**
+	 * Throws an exception when called
+	 * 
 	 * Set the PWM value based on a position.
 	 *
 	 * <p>
@@ -209,6 +215,8 @@ public class PWM extends SensorBase implements LiveWindowSendable {
 	}
 	
 	/**
+	 * Throws an exception when called
+	 * 
 	 * Get the PWM value in terms of a position.
 	 *
 	 * <p>
@@ -218,6 +226,7 @@ public class PWM extends SensorBase implements LiveWindowSendable {
 	 * @pre SetMaxPositivePwm() called.
 	 * @pre SetMinNegativePwm() called.
 	 */
+	@Deprecated
 	public double getPosition() {
 		throw new UnsupportedOperationException(
 				"Servos are represented seperately from pwms on Raspberry Pi");
@@ -231,11 +240,6 @@ public class PWM extends SensorBase implements LiveWindowSendable {
 	 *
 	 * @param speed
 	 *            The speed to set the speed controller between -1.0 and 1.0.
-	 * @pre SetMaxPositivePwm() called.
-	 * @pre SetMinPositivePwm() called.
-	 * @pre SetCenterPwm() called.
-	 * @pre SetMaxNegativePwm() called.
-	 * @pre SetMinNegativePwm() called.
 	 */
 	public void setSpeed(double speed) {
 		forward.setValue(0);
@@ -256,7 +260,7 @@ public class PWM extends SensorBase implements LiveWindowSendable {
 				} else if(speed > 0) {
 					forward.setValue((float) speed);
 				} else if(speed < 0) {
-					backward.setValue((float) speed);
+					backward.setValue((float) -speed);
 				}
 			}
 			
@@ -270,19 +274,14 @@ public class PWM extends SensorBase implements LiveWindowSendable {
 	 * This is intended to be used by speed controllers.
 	 *
 	 * @return The most recently set speed between -1.0 and 1.0.
-	 * @pre SetMaxPositivePwm() called.
-	 * @pre SetMinPositivePwm() called.
-	 * @pre SetMaxNegativePwm() called.
-	 * @pre SetMinNegativePwm() called.
 	 */
 	public double getSpeed() {
-		if(forward.getValue() != 0 && backward.getValue() != 0) {
-			return 0;
-		}
-		return forward.getValue() + backward.getValue();
+		return forward.getValue() - backward.getValue();
 	}
 	
 	/**
+	 * Throws an exception when called
+	 * 
 	 * Set the PWM value directly to the hardware.
 	 *
 	 * <p>
@@ -298,6 +297,8 @@ public class PWM extends SensorBase implements LiveWindowSendable {
 	}
 	
 	/**
+	 * Throws an exception when called
+	 * 
 	 * Get the PWM value directly from the hardware.
 	 *
 	 * <p>
@@ -305,6 +306,7 @@ public class PWM extends SensorBase implements LiveWindowSendable {
 	 *
 	 * @return Raw PWM control value. Range: 0 - 255.
 	 */
+	@Deprecated
 	public int getRaw() {
 		throw new UnsupportedOperationException(
 				"GPIO pins do not have raw read");
@@ -320,15 +322,22 @@ public class PWM extends SensorBase implements LiveWindowSendable {
 	}
 	
 	/**
+	 * Throws an exception when called
+	 * 
 	 * Slow down the PWM signal for old devices.
 	 *
 	 * @param mult
 	 *            The period multiplier to apply to this channel
 	 */
+	@Deprecated
 	public void setPeriodMultiplier(PeriodMultiplier mult) {
 		throw new UnsupportedOperationException("Only one speed implemented");
 	}
 	
+	/**
+	 * Throws an exception when called
+	 */
+	@Deprecated
 	protected void setZeroLatch() {
 		throw new UnsupportedOperationException("No zero latch");
 	}
