@@ -291,4 +291,8 @@ public class IterativeRobot extends RobotBase {
       m_tmpFirstRun = false;
     }
   }
+  
+  public static void main(String... args){
+	  RobotBase.main("edu.wpi.first.wpilibj.IterativeRobot");
+  }
 }

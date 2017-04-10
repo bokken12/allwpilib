@@ -21,9 +21,6 @@ import edu.wpi.first.wpilibj.tables.ITableListener;
  */
 public class DigitalOutput extends DigitalSource implements LiveWindowSendable {
 
-  private static final int invalidPwmGenerator = 0;
-  private int m_pwmGenerator = invalidPwmGenerator;
-
   private int m_channel = 0;
   private DigitalOutputDevice m_device;
 
@@ -48,11 +45,7 @@ public class DigitalOutput extends DigitalSource implements LiveWindowSendable {
   @Override
   public void free() {
     // disable the pwm only if we have allocated it
-    if (m_pwmGenerator != invalidPwmGenerator) {
-      disablePWM();
-    }
-    DIOJNI.freeDIOPort(m_handle);
-    m_handle = 0;
+    m_device.close();
   }
 
   /**
@@ -61,7 +54,7 @@ public class DigitalOutput extends DigitalSource implements LiveWindowSendable {
    * @param value true is on, off is false
    */
   public void set(boolean value) {
-    DIOJNI.setDIO(m_handle, (short) (value ? 1 : 0));
+		m_device.setOn(value);
   }
 
   /**
@@ -70,7 +63,7 @@ public class DigitalOutput extends DigitalSource implements LiveWindowSendable {
    * @return the state of the digital output.
    */
   public boolean get() {
-    return DIOJNI.getDIO(m_handle);
+    return m_device.isOn();
   }
 
   /**
@@ -87,7 +80,7 @@ public class DigitalOutput extends DigitalSource implements LiveWindowSendable {
    * @param pulseLength The length of the pulse.
    */
   public void pulse(final double pulseLength) {
-    DIOJNI.pulse(m_handle, pulseLength);
+	  m_device.onOffLoop((float) pulseLength, (float) pulseLength, 1, true, null);
   }
 
   /**
@@ -101,22 +94,10 @@ public class DigitalOutput extends DigitalSource implements LiveWindowSendable {
   @Deprecated
   @SuppressWarnings("PMD.UnusedFormalParameter")
   public void pulse(final int channel, final double pulseLength) {
-    DIOJNI.pulse(m_handle, pulseLength);
-  }
-
-  /**
-   * @param channel     Unused
-   * @param pulseLength The length of the pulse.
-   * @deprecated Generate a single pulse. Write a pulse to the specified digital output channel.
-   *             There can only be a single pulse going at any time.
-   */
-  @Deprecated
-  @SuppressWarnings("PMD.UnusedFormalParameter")
-  public void pulse(final int channel, final int pulseLength) {
-    double convertedPulse = pulseLength / 1.0e9 * (DIOJNI.getLoopTiming() * 25);
-    System.err
-        .println("You should use the double version of pulse for portability.  This is deprecated");
-    DIOJNI.pulse(m_handle, convertedPulse);
+	  if(m_channel != channel){
+		  throw new IllegalArgumentException("Cannot pulse a different digital output");
+	  }
+	  pulse(pulseLength);
   }
 
   /**
@@ -125,82 +106,7 @@ public class DigitalOutput extends DigitalSource implements LiveWindowSendable {
    * @return true if pulsing
    */
   public boolean isPulsing() {
-    return DIOJNI.isPulsing(m_handle);
-  }
-
-  /**
-   * Change the PWM frequency of the PWM output on a Digital Output line.
-   *
-   * <p>The valid range is from 0.6 Hz to 19 kHz. The frequency resolution is logarithmic.
-   *
-   * <p>There is only one PWM frequency for all channnels.
-   *
-   * @param rate The frequency to output all digital output PWM signals.
-   */
-  public void setPWMRate(double rate) {
-    DIOJNI.setDigitalPWMRate(rate);
-  }
-
-  /**
-   * Enable a PWM Output on this line.
-   *
-   * <p>Allocate one of the 6 DO PWM generator resources.
-   *
-   * <p>Supply the initial duty-cycle to output so as to avoid a glitch when first starting.
-   *
-   * <p>The resolution of the duty cycle is 8-bit for low frequencies (1kHz or less) but is reduced
-   * the higher the frequency of the PWM signal is.
-   *
-   * @param initialDutyCycle The duty-cycle to start generating. [0..1]
-   */
-  public void enablePWM(double initialDutyCycle) {
-    if (m_pwmGenerator != invalidPwmGenerator) {
-      return;
-    }
-    m_pwmGenerator = DIOJNI.allocateDigitalPWM();
-    DIOJNI.setDigitalPWMDutyCycle(m_pwmGenerator, initialDutyCycle);
-    DIOJNI.setDigitalPWMOutputChannel(m_pwmGenerator, m_channel);
-  }
-
-  /**
-   * Change this line from a PWM output back to a static Digital Output line.
-   *
-   * <p>Free up one of the 6 DO PWM generator resources that were in use.
-   */
-  public void disablePWM() {
-    if (m_pwmGenerator == invalidPwmGenerator) {
-      return;
-    }
-    // Disable the output by routing to a dead bit.
-    DIOJNI.setDigitalPWMOutputChannel(m_pwmGenerator, kDigitalChannels);
-    DIOJNI.freeDigitalPWM(m_pwmGenerator);
-    m_pwmGenerator = invalidPwmGenerator;
-  }
-
-  /**
-   * Change the duty-cycle that is being generated on the line.
-   *
-   * <p>The resolution of the duty cycle is 8-bit for low frequencies (1kHz or less) but is reduced
-   * the
-   * higher the frequency of the PWM signal is.
-   *
-   * @param dutyCycle The duty-cycle to change to. [0..1]
-   */
-  public void updateDutyCycle(double dutyCycle) {
-    if (m_pwmGenerator == invalidPwmGenerator) {
-      return;
-    }
-    DIOJNI.setDigitalPWMDutyCycle(m_pwmGenerator, dutyCycle);
-  }
-
-  /**
-   * Get the analog trigger type.
-   *
-   * @return false
-   */
-  @Override
-  public int getAnalogTriggerTypeForRouting() {
-    return 0;
+    return false;
   }
 
   /**
@@ -211,16 +117,6 @@ public class DigitalOutput extends DigitalSource implements LiveWindowSendable {
   @Override
   public boolean isAnalogTrigger() {
     return false;
-  }
-
-  /**
-   * Get the HAL Port Handle.
-   *
-   * @return The HAL Handle to the specified source.
-   */
-  @Override
-  public int getPortHandleForRouting() {
-    return m_handle;
   }
 
   /*

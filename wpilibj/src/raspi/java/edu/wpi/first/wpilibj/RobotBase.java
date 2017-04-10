@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.jar.Manifest;
+
 import org.opencv.core.Core;
 
 import edu.wpi.first.wpilibj.hal.FRCNetComm.tInstances;
@@ -217,6 +218,9 @@ public abstract class RobotBase {
       try {
         Manifest manifest = new Manifest(resources.nextElement().openStream());
         robotName = manifest.getMainAttributes().getValue("Robot-Class");
+        if(robotName == null && args.length > 0){
+          robotName = args[0];
+        }
       } catch (IOException ex) {
         ex.printStackTrace();
       }

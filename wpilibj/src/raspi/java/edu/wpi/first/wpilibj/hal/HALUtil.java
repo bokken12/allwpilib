@@ -8,7 +8,7 @@
 package edu.wpi.first.wpilibj.hal;
 
 @SuppressWarnings("AbbreviationAsWordInName")
-public class HALUtil extends JNIWrapper {
+public class HALUtil {
   public static final int NULL_PARAMETER = -1005;
   public static final int SAMPLE_RATE_TOO_HIGH = 1001;
   public static final int VOLTAGE_OUT_OF_RANGE = 1002;
@@ -18,21 +18,45 @@ public class HALUtil extends JNIWrapper {
   public static final int NO_AVAILABLE_RESOURCES = -104;
   public static final int PARAMETER_OUT_OF_RANGE = -1028;
 
-  public static native short getFPGAVersion();
+  public static short getFPGAVersion(){
+	  System.out.println("Util: getFPGAVersion");
+	  return 0;
+  }
 
-  public static native int getFPGARevision();
+  public static int getFPGARevision(){
+	  System.out.println("Util: getFPGARevision");
+	  return 0;
+  }
 
-  public static native long getFPGATime();
+  public static long getFPGATime(){
+	  System.out.println("Util: getFPGATime");
+	  return 0;
+  }
 
-  public static native int getHALRuntimeType();
+  public static int getHALRuntimeType(){
+	  System.out.println("Util: getHALRuntimeType");
+	  return 0;
+  }
 
-  public static native boolean getFPGAButton();
+  public static boolean getFPGAButton(){
+	  System.out.println("Util: getFPGAButton");
+	  return false;
+  }
 
-  public static native String getHALErrorMessage(int code);
+  public static String getHALErrorMessage(int code){
+	  System.out.println("Util: getHALErrorMessage(" + code + ")");
+	  return "";
+  }
 
-  public static native int getHALErrno();
+  public static int getHALErrno(){
+	  System.out.println("Util: getHALErrno");
+	  return 0;
+  }
 
-  public static native String getHALstrerror(int errno);
+  public static String getHALstrerror(int errno){
+	  System.out.println("Util: getHALstrerror(" + errno + ")");
+	  return "";
+  }
 
   public static String getHALstrerror() {
     return getHALstrerror(getHALErrno());

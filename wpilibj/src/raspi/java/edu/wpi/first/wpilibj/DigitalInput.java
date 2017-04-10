@@ -47,9 +47,6 @@ public class DigitalInput extends DigitalSource implements LiveWindowSendable {
 	 * Frees the resources for this output.
 	 */
 	public void free() {
-		if(m_interrupt != 0) {
-			cancelInterrupts();
-		}
 		m_device.close();
 	}
 	
@@ -71,16 +68,6 @@ public class DigitalInput extends DigitalSource implements LiveWindowSendable {
 	@Override
 	public int getChannel() {
 		return m_channel;
-	}
-	
-	/**
-	 * Get the analog trigger type.
-	 *
-	 * @return false
-	 */
-	@Override
-	public int getAnalogTriggerTypeForRouting() {
-		return 0;
 	}
 	
 	/**

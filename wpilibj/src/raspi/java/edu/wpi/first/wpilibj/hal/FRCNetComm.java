@@ -11,7 +11,7 @@ package edu.wpi.first.wpilibj.hal;
  * JNI wrapper for library <b>FRC_NetworkCommunication</b><br>.
  */
 @SuppressWarnings("MethodName")
-public class FRCNetComm extends JNIWrapper {
+public class FRCNetComm {
   /**
    * Module type from LoadOut.h
    */

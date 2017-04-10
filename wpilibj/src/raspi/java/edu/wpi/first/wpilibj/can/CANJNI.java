@@ -10,10 +10,8 @@ package edu.wpi.first.wpilibj.can;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
-import edu.wpi.first.wpilibj.hal.JNIWrapper;
-
 @SuppressWarnings("AbbreviationAsWordInName")
-public class CANJNI extends JNIWrapper {
+public class CANJNI {
   public static final int CAN_SEND_PERIOD_NO_REPEAT = 0;
   public static final int CAN_SEND_PERIOD_STOP_REPEATING = -1;
 
@@ -22,11 +20,16 @@ public class CANJNI extends JNIWrapper {
   public static final int CAN_IS_FRAME_11BIT = 0x40000000;
 
   @SuppressWarnings("MethodName")
-  public static native void FRCNetCommCANSessionMuxSendMessage(int messageID,
+  public static void FRCNetCommCANSessionMuxSendMessage(int messageID,
                                                                             ByteBuffer data,
-                                                                            int periodMs);
+                                                                            int periodMs){
+	  System.out.println("CAN: FRCNetCommCanSessionMuxSendMessage(" + messageID + ", " + data + ", " + periodMs + ")");
+  }
 
   @SuppressWarnings("MethodName")
-  public static native ByteBuffer FRCNetCommCANSessionMuxReceiveMessage(
-      IntBuffer messageID, int messageIDMask, ByteBuffer timeStamp);
+  public static ByteBuffer FRCNetCommCANSessionMuxReceiveMessage(
+      IntBuffer messageID, int messageIDMask, ByteBuffer timeStamp){
+	  System.out.println("CAN: FRCNetCommCANSessionMuxRecieveMessage(" + messageID + ", " + messageIDMask + ", " + timeStamp + ")");
+	  return null;
+  }
 }
