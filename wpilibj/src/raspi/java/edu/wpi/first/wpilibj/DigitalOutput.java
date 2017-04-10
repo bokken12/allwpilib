@@ -7,7 +7,8 @@
 
 package edu.wpi.first.wpilibj;
 
-import edu.wpi.first.wpilibj.hal.DIOJNI;
+import com.diozero.api.DigitalOutputDevice;
+
 import edu.wpi.first.wpilibj.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.wpilibj.hal.HAL;
 import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
@@ -24,20 +25,19 @@ public class DigitalOutput extends DigitalSource implements LiveWindowSendable {
   private int m_pwmGenerator = invalidPwmGenerator;
 
   private int m_channel = 0;
-  private int m_handle = 0;
+  private DigitalOutputDevice m_device;
 
   /**
    * Create an instance of a digital output. Create an instance of a digital output given a
    * channel.
    *
-   * @param channel the DIO channel to use for the digital output. 0-9 are on-board, 10-25 are on
-   *                the MXP
+   * @param channel the GPIO channel to use for the digital output.
    */
   public DigitalOutput(int channel) {
-    checkDigitalChannel(channel);
+    checkGPIOChannel(channel);
     m_channel = channel;
 
-    m_handle = DIOJNI.initializeDIOPort(DIOJNI.getPort((byte)channel), false);
+    m_device = new DigitalOutputDevice(channel);
 
     HAL.report(tResourceType.kResourceType_DigitalOutput, channel);
   }

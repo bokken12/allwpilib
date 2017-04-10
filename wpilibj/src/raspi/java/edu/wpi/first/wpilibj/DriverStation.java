@@ -18,7 +18,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import edu.wpi.first.wpilibj.hal.AllianceStationID;
 import edu.wpi.first.wpilibj.hal.ControlWord;
 import edu.wpi.first.wpilibj.hal.HAL;
-import edu.wpi.first.wpilibj.hal.PowerJNI;
 
 /**
  * Provide access to the network communication data to / from the Driver Station.
@@ -703,7 +702,7 @@ public class DriverStation implements RobotState.Interface {
    * @return The battery voltage in Volts.
    */
   public double getBatteryVoltage() {
-    return PowerJNI.getVinVoltage();
+    return 0;
   }
 
   /**

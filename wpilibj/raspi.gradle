@@ -1,13 +1,13 @@
 apply plugin: 'cpp'
 
-def jniDir = 'src/athena/cpp'
+def jniDir = 'src/raspi/cpp'
 def generatedJNIHeaderLoc = "$buildDir/include"
 def docSource = "$buildDir/docSource"
 
 debugStripSetup(project)
 
 sourceSets {
-    athena
+    raspi
 }
 
 configurations.create('doc')
@@ -77,14 +77,14 @@ publishing {
             }
 
             groupId 'edu.wpi.first.wpilibj'
-            artifactId 'athena'
+            artifactId 'raspi'
             version WPILibVersion.version
         }
         wpilibjjni(MavenPublication) {
             artifact wpilibjNativeLibraries
 
             groupId 'edu.wpi.first.wpilibj'
-            artifactId 'athena-jni'
+            artifactId 'raspi-jni'
             version WPILibVersion.version
         }
     }

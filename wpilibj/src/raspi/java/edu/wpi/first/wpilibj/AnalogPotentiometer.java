@@ -117,7 +117,7 @@ public class AnalogPotentiometer implements Potentiometer, LiveWindowSendable {
    */
   @Override
   public double get() {
-    return (m_analogInput.getVoltage() / ControllerPower.getVoltage5V()) * m_fullRange + m_offset;
+    return (m_analogInput.getVoltage() / 5.0) * m_fullRange + m_offset;
   }
 
   @Override
