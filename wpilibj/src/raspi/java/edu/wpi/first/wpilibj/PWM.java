@@ -64,7 +64,7 @@ public class PWM extends SensorBase implements LiveWindowSendable {
 	 */
 	public static final int PWM0 = packInt(12, 13);
 	/**
-	 * One of two hardware-based PWMs using GPIO pins 12 and 13
+	 * One of two hardware-based PWMs using GPIO pins 18 and 19
 	 */
 	public static final int PWM1 = packInt(18, 19);
 	

@@ -44,7 +44,7 @@ public abstract class RobotBase {
   // This is usually 1, but it is best to make sure
   public static final long MAIN_THREAD_ID = Thread.currentThread().getId();
 
-  protected final DriverStation m_ds;
+  //protected final DriverStation m_ds;
 
   /**
    * Constructor for a generic robot program. User code should be placed in the constructor that
@@ -60,12 +60,12 @@ public abstract class RobotBase {
     // TODO: See if the next line is necessary
     // Resource.RestartProgram();
 
-    NetworkTable.setNetworkIdentity("Robot");
+    /*NetworkTable.setNetworkIdentity("Robot");
     NetworkTable.setPersistentFilename("/home/lvuser/networktables.ini");
     NetworkTable.setServerMode();// must be before b
     m_ds = DriverStation.getInstance();
     NetworkTable.getTable(""); // forces network tables to initialize
-    NetworkTable.getTable("LiveWindow").getSubTable("~STATUS~").putBoolean("LW Enabled", false);
+    NetworkTable.getTable("LiveWindow").getSubTable("~STATUS~").putBoolean("LW Enabled", false);*/
   }
 
   /**
@@ -105,7 +105,7 @@ public abstract class RobotBase {
    * @return True if the Robot is currently disabled by the field controls.
    */
   public boolean isDisabled() {
-    return m_ds.isDisabled();
+    return false;// m_ds.isDisabled();
   }
 
   /**
@@ -114,7 +114,7 @@ public abstract class RobotBase {
    * @return True if the Robot is currently enabled by the field controls.
    */
   public boolean isEnabled() {
-    return m_ds.isEnabled();
+    return true;//m_ds.isEnabled();
   }
 
   /**
@@ -124,7 +124,7 @@ public abstract class RobotBase {
    * @return True if the robot is currently operating Autonomously.
    */
   public boolean isAutonomous() {
-    return m_ds.isAutonomous();
+    return false;//m_ds.isAutonomous();
   }
 
   /**
@@ -134,7 +134,7 @@ public abstract class RobotBase {
    * @return True if the robot is currently operating in Test mode.
    */
   public boolean isTest() {
-    return m_ds.isTest();
+    return false;// m_ds.isTest();
   }
 
   /**
@@ -144,7 +144,7 @@ public abstract class RobotBase {
    * @return True if the robot is currently operating in Tele-Op mode.
    */
   public boolean isOperatorControl() {
-    return m_ds.isOperatorControl();
+    return true;//m_ds.isOperatorControl();
   }
 
   /**
@@ -153,7 +153,7 @@ public abstract class RobotBase {
    * @return Has new data arrived over the network since the last time this function was called?
    */
   public boolean isNewDataAvailable() {
-    return m_ds.isNewControlData();
+    return false;//m_ds.isNewControlData();
   }
 
   /**
@@ -203,6 +203,8 @@ public abstract class RobotBase {
    */
   @SuppressWarnings("PMD.UnusedFormalParameter")
   public static void main(String... args) {
+	  (new TestingRobot()).startCompetition();
+	  /*
     initializeHardwareConfiguration();
 
     HAL.report(tResourceType.kResourceType_Language, tInstances.kLanguage_Java);
@@ -276,6 +278,6 @@ public abstract class RobotBase {
         System.err.println("---> Unexpected return from startCompetition() method.");
       }
     }
-    System.exit(1);
+    System.exit(1);*/
   }
 }
